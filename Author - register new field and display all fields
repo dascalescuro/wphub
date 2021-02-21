@@ -1,0 +1,140 @@
+/*
+* Register new field
+functions.php - - - - - - - - - -
+*/
+function THEMENAME_user_profile_fields($profile_fields) {
+	$profile_fields['job_title'] = 'Job Title';
+
+	return $profile_fields;
+}
+add_filter('user_contactmethods', 'THEMENAME_user_profile_fields');
+
+
+/*
+* Display the new field
+single.php - - - - - - - - - -
+*/
+<?php
+$author_job_title = get_the_author_meta( 'job_title' );
+
+// New field
+if ( ! empty( $author_job_title ) ) {
+	$author_job_title = sanitize_text_field( $author_job_title );
+}
+?>
+
+
+/*
+* Display all author fields
+inc/template-tags.php - - - - - - - - - -
+*/
+if ( ! function_exists( 'THEMENAME_get_author' ) ) :
+	/**
+	 * Returns the author meta data outside the loop.
+	 *
+	 * @since THEMENAME 1.0
+	 */
+	function THEMENAME_get_author( $info ) {
+		global $post;
+		$author_id = $post->post_author;
+		$author = get_the_author_meta( $info, $author_id );
+		return $author;
+	}
+endif;
+
+if ( ! function_exists( 'THEMENAME_author_box' ) ) :
+	/**
+	 * Display author box below the posts.
+	 *
+	 * @since THEMENAME 1.0
+	 */
+	function THEMENAME_author_box() {
+			$author_first_name =  get_the_author_meta( 'first_name' );
+			$author_last_name = get_the_author_meta( 'last_name' );
+			$author_description = wp_kses_post( nl2br( get_the_author_meta('description') ) );
+			$author_email = get_the_author_meta( 'user_email' );
+			$author_url = get_the_author_meta( 'user_url' );
+			$author_facebook = get_the_author_meta( 'facebook' );
+			$author_twitter = get_the_author_meta( 'twitter' );
+			$author_googleplus = get_the_author_meta( 'googleplus' );
+			$author_job_title = get_the_author_meta( 'job_title' );
+
+			$author_name = '';
+			if ( ! empty( $author_first_name ) ) {
+				$author_name .= sanitize_text_field( $author_first_name ) . ' ';
+			}
+			if ( ! empty( $author_last_name ) ) {
+				$author_name .= sanitize_text_field( $author_last_name );
+			}
+
+			if ( ! empty( $author_email ) ) {
+				$author_email = sanitize_text_field( $author_email );
+			}
+
+			if ( ! empty( $author_url ) ) {
+				$author_url = sanitize_text_field( $author_url );
+			}
+
+			if ( ! empty( $author_facebook ) ) {
+				$author_facebook = sanitize_text_field( $author_facebook );
+			}
+
+			if ( ! empty( $author_twitter ) ) {
+				$author_twitter = sanitize_text_field( $author_twitter );
+			}
+
+			if ( ! empty( $author_googleplus ) ) {
+				$author_googleplus = sanitize_text_field( $author_googleplus );
+			}
+
+			if ( ! empty( $author_job_title ) ) {
+				$author_job_title = sanitize_text_field( $author_job_title );
+			}
+			?>
+			<div class="author vcard" itemscope="itemscope" itemtype="http://schema.org/Person" itemprop="author">
+			    <div class="container author-container">
+                    <div class="author-image" itemprop="image">
+                        <?php echo get_avatar( get_the_author_meta( 'user_email' ), '145' ); ?>
+                    </div>
+                    <div class="author-content">
+                        <?php if( $author_name!=='' || $author_job_title!=='' ) {
+                            echo '<div class="author-title">';
+                            if( $author_name!=='' ) { // Full name with link
+                                echo '<a href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '" title="' . esc_attr( $author_name ) . '" class="author-name" itemprop="name">' . esc_html( $author_name ) . '</a>';
+                            }
+                            if( $author_job_title!=='' ) { // Job title
+                                echo ', <span class="author-job-title" itemprop="jobTitle">'. esc_html( $author_job_title ) . '</span> - ';
+                            }
+                            echo __('Post Author','THEMENAME');
+                            echo '</div>';
+                        } ?>
+
+                        <?php if( $author_description!=='' ) { // Description
+                            echo '<p class="author-description" itemprop="description">' . $author_description . '</p>';
+                        } ?>
+
+                        <?php if( $author_email!=='' || $author_website!=='' || $author_facebook!=='' || $author_twitter!=='' || $author_googleplus!=='' ) {
+                            echo '<div class="author-contact">';
+                            if( $author_email!=='' ) { // E-mail
+                                echo '<a href="mailto:' . esc_attr( $author_email ) . '"><i class="fa fa-envelope"></i></a>';
+                            }
+                            if( $author_url!=='' ) { // Website
+                                echo '<a href="' . esc_attr( $author_url ) . '" target="_blank"><i class="fa fa-link"></i></a>';
+                            }
+                            if( $author_facebook!=='' ) { // Facebook
+                                echo '<a href="' . esc_attr( $author_facebook ) . '" target="_blank"><i class="fa fa-facebook"></i></a>';
+                            }
+                            if( $author_twitter!=='' ) { // Twitter
+                                echo '<a href="https://twitter.com/' . esc_attr( $author_twitter ) . '" target="_blank"><i class="fa fa-twitter"></i></a>';
+                            }
+                            if( $author_googleplus!=='' ) { // Google+
+                                echo '<a href="' . esc_attr( $author_googleplus ) . '?rel=author" rel="author" target="_blank"><i class="fa fa-google-plus"></i></a>';
+                            }
+                            echo '</div>';
+                        } ?>
+                    </div>
+                </div>
+			</div><!-- .author -->
+		<?php
+	}
+endif;
