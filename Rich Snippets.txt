@@ -1,0 +1,123 @@
+/*
+header.php - - - - - - - - - -
+*/
+
+<body <?php body_class(); ?> itemscope="itemscope" itemtype="http://schema.org/WebPage">
+
+- - -
+
+<header id="masthead" class="site-header" itemscope="itemscope" itemtype="http://schema.org/WPHeader" role="banner">
+
+- - -
+
+<h1 class="site-title" itemprop="headline">
+
+- - -
+
+<h2 class="site-description" itemprop="description">
+
+- - -
+
+<nav id="site-navigation" class="main-navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+
+/*
+index.php - - - - - - - - - -
+*/
+
+<main id="main" class="site-main" role="main" itemprop="mainContentOfPage" itemscope="itemscope" itemtype="http://schema.org/Blog">
+
+- - -
+
+<article id="post-<?php the_ID(); ?>" <?php post_class(); ?> itemscope="itemscope" itemtype="http://schema.org/BlogPosting" itemprop="blogPost">
+
+- - -
+
+<h2 class="entry-title" itemprop="headline">
+
+- - -
+
+<div class="entry-thumb" itemprop="image">
+
+- - -
+
+<time class="entry-time published" datetime="<?php the _time('c'); ?>" itemprop="datePublished">
+
+- - -
+
+<span class="author-link" itemscope="itemscope" itemtype="http://schema.org/Person" itemprop="author">
+
+- - -
+
+<span class="author vcard" itemprop="name">
+
+- - -
+
+<div class="entry-summary" itemprop="text">
+
+- - -
+
+<div class="entry-content" itemprop="text">
+
+/*
+single.php - - - - - - - - - -
+*/
+
+<main id="main" class="site-main" role="main" itemprop="mainContentOfPage" itemscope="itemscope" itemtype="http://schema.org/Blog">
+
+- - -
+
+<h1 class="entry-title" itemprop="headline">
+
+- - -
+
+<div class="entry-content" itemprop="text">
+
+- - -
+
+<time class="posted-on published" datetime="<?php the _time('c'); ?>" itemprop="datePublished">
+
+- - -
+
+<span class="author-link" itemscope="itemscope" itemtype="http://schema.org/Person" itemprop="author">
+
+- - -
+
+<span class="author vcard" itemprop="name">
+
+- - -
+
+<div class="entry-thumb" itemprop="image">
+
+- - -
+
+<div class="entry-content" itemprop="text">
+
+/*
+page.php - - - - - - - - - -
+*/
+
+<main id="main" class="site-main" role="main" itemprop="mainContentOfPage" itemscope="itemscope" itemtype="http://schema.org/Blog">
+
+- - -
+
+<article id="post-<?php the_ID(); ?>" <?php post_class(); ?> itemscope="itemscope" itemtype="http://schema.org/BlogPosting" itemprop="blogPost">
+
+- - -
+
+<h1 class="entry-title" itemprop="headline">
+
+- - -
+
+<div class="entry-content" itemprop="text">
+
+/*
+footer.php - - - - - - - - - -
+*/
+
+<footer id="colophon" class="site-footer" role="contentinfo" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+
+/*
+sidebar.php - - - - - - - - - -
+*/
+
+<div id="secondary" class="widget-area" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">

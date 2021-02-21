@@ -1,0 +1,38 @@
+/*
+* Register new thumbnails size
+functions.php - - - - - - - - - -
+*/
+add_theme_support( 'post-thumbnails', array( 'post', 'page', 'product', 'download' ) );
+add_image_size( 'post-thumbnail', 370, 270, true );
+add_image_size( 'THEMENAME-thumbnail-blog', 840, 445, true );
+add_image_size( 'THEMENAME-thumbnail-blog-no-crop', 840, 445 );
+
+
+/*
+* Display
+single.php - - - - - - - - - -
+*/
+<?php 
+if ( is_single() ) {
+    if ( has_post_thumbnail() ) {
+        echo '<div class="post-thumbnail">';
+			the_post_thumbnail( 'THEMENAME-thumbnail-blog' );
+			echo '</div>';
+    } else { ?>
+    	<div class="post-thumbnail">
+        	<img width="840" height="445" src="<?php echo get_template_directory_uri() . '/img/default-thumbnail.jpg'; ?>" class="attachment-post-thumbnail wp-post-image" alt="<?php the_title(); ?>"/>
+        </div>
+        <?php
+    }
+} 
+?>
+
+
+/*
+* Styling
+style.css - - - - - - - - - -
+*/
+.post-thumbnail img {
+    max-width: 100%;
+    width: auto;
+}

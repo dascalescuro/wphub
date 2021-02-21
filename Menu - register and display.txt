@@ -1,0 +1,34 @@
+/*
+* Register
+functions.php - - - - - - - - - -
+*/
+function THEMENAME_custom_menu() {
+  register_nav_menus('custom-menu' => __( 'Custom Menu' ));
+}
+add_action( 'init', 'THEMENAME_custom_menu' );
+
+
+/*
+* Register 2 menus
+functions.php - - - - - - - - - -
+*/
+function THEMENAME_custom_menu() {
+  register_nav_menus(
+    array(
+      'custom-menu' => __( 'Custom Menu' ),
+      'custom-menu-2' => __( 'Custom Menu 2' )
+    )
+  );
+}
+add_action( 'init', 'THEMENAME_custom_menu' );
+
+
+/*
+* Display
+header.php - - - - - - - - - -
+*/
+<?php
+wp_nav_menu( array( 
+    'theme_location' => 'custom-menu', 
+    'menu_class' => 'custom-menu-class' ) ); 
+?>

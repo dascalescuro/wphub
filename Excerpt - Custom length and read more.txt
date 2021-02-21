@@ -1,0 +1,19 @@
+/*
+* Show/hide search in customizer
+functions.php - - - - - - - - - -
+*/
+function THEMENAME_excerpt_length( $length ) {  // only first 10 words
+	return 10;
+}
+add_filter( 'excerpt_length', 'THEMENAME_excerpt_length', 999 );
+
+
+function THEMENAME_excerpt_more( $more ) { // display ...
+	return '...';
+}
+add_filter( 'excerpt_more', 'THEMENAME_excerpt_more' );
+
+
+function THEMENAME_excerpt_more( $more ) { // display Read more link
+    return sprintf( '<a class="read-more" href="%1$s">%2$s</a>', get_permalink( get_the_ID() ), __( 'Read More', 'THEMENAME' ));
+}

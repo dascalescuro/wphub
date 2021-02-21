@@ -1,0 +1,10 @@
+/*
+* Display 1 level only (depth)
+header.php - - - - - - - - - -
+*/
+<?php
+wp_nav_menu( array( 
+    'theme_location' => 'custom-menu', 
+    'container_class' => 'custom-menu-class',
+    'depth' => 1) );
+?>

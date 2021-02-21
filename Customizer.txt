@@ -1,0 +1,48 @@
+/*
+* Logo/title in customizer
+functions.php - - - - - - - - - -
+*/
+
+function THEMENAME_brand() {
+	if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) {
+
+		the_custom_logo();
+
+	} else {
+
+		if ( is_customize_preview() ) {  ?>
+
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="custom-logo-link only-customizer" title="<?php echo esc_attr( get_bloginfo( 'title' ) ); ?>">
+				<img src="">
+			</a>
+
+			<?php
+		}
+
+		if ( is_front_page() && is_home() ) : ?>
+			<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+		<?php else : ?>
+			<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+			<?php
+		endif;
+
+		$description = get_bloginfo( 'description', 'display' );
+		if ( $description || is_customize_preview() ) : ?>
+			<p class="site-description"><?php echo $description; /* WPCS: xss ok. */ ?></p>
+			<?php
+		endif;
+	}
+}
+
+
+/*
+* Remove options
+customizer.php - - - - - - - - - -
+*/
+function THEMENAME_customize_register( $wp_customize ) {
+
+    $wp_customize->remove_control( 'display_header_text' );
+
+}
+add_action( 'customize_register', 'THEMENAME_customize_register' );
+

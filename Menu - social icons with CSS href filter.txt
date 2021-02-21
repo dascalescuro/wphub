@@ -1,0 +1,88 @@
+/*
+* Register
+functions.php - - - - - - - - - -
+*/
+function THEMENAME_social_icons_menu() {
+  register_nav_menus('social-icons' => __( 'Social Icons' ));
+}
+add_action( 'init', 'THEMENAME_social_icons_menu' );
+
+
+/*
+* Display
+header.php - - - - - - - - - -
+*/
+<?php 
+wp_nav_menu( array( 
+	'theme_location' => 'social-icons', 
+	'menu_class' => 'social-icons',
+	'container' => '',
+	'link_before' => '<span class="screen-reader-text">',
+	'link_after' => '</span>',
+	'depth' => 1,
+	'fallback_cb' => false) );
+?>
+
+
+/*
+* CSS href filter
+style.css - - - - - - - - - -
+*/
+.social-icons li a::before {
+    font-family: FontAwesome;
+}
+
+.social-icons li a[href!="#"]::before {
+    content: '\f0c1';
+}
+.social-icons li a[href*="facebook.com"]::before {
+    content: '\f09a';
+}
+
+.social-icons li a[href*="twitter.com"]::before {
+    content: '\f099';
+}
+
+.social-icons li a[href*="plus.google.com"]::before {
+    content: '\f0d5';
+}
+
+.social-icons li a[href*="linkedin.com"]::before {
+    content: '\f0e1';
+}
+
+.social-icons li a[href*="instagram.com"]::before {
+    content: '\f16d';
+}
+
+.social-icons li a[href*="dribbble.com"]::before {
+    content: '\f17d';
+}
+
+.social-icons li a[href*="pinterest.com"]::before {
+    content: '\f0d2';
+}
+
+.social-icons li a[href*="youtube.com"]::before {
+    content: '\f167';
+}
+
+.social-icons li a[href*="flickr.com"]::before {
+    content: '\f16e';
+}
+
+.social-icons li a[href*="vimeo.com"]::before {
+    content: '\f194';
+}
+
+.social-icons li a[href*="foursquare.com"]::before {
+    content: '\f180';
+}
+
+.social-icons li a[href*="tumblr.com"]::before {
+    content: '\f173';
+}
+
+.social-icons li a[href*="tumblr.com"]::before {
+    content: '\f173';
+}

@@ -1,0 +1,26 @@
+/*
+* Show/hide search in customizer
+functions.php - - - - - - - - - -
+*/
+function THEMENAME_search_icon() {
+    $THEMENAME_show_search = get_theme_mod( 'THEMENAME_show_search' );
+
+    if ( 1 != $THEMENAME_show_search && is_customize_preview() || ( isset( $THEMENAME_show_search ) ) ) {
+        get_search_form();
+    }
+}
+
+
+/*
+* Custom code for search form (create file searchform.php)
+searchform.php - - - - - - - - - -
+*/
+<?php
+?>
+<form role="search" method="get" class="search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+    <label>
+        <span class="screen-reader-text"><?php echo _x( 'Search for:', 'THEMENAME' ); ?></span>
+        <input type="search" class="search-field" placeholder="<?php echo esc_attr_x( 'Search', 'THEMENAME' ); ?>" value="<?php get_search_query(); ?>" name="s" />
+    </label>
+    <button type="submit" class="search-submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+</form>

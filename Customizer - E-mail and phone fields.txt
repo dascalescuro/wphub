@@ -1,0 +1,83 @@
+/*
+* E-mail/phone fields in customizer
+customizer.php - - - - - - - - - -
+*/
+// Phone
+$wp_customize->add_setting( 'THEMENAME_contact_phone', array(
+    'default' => esc_html__( 'DEFAULT PHONE','THEMENAME' ),
+    'sanitize_callback' => 'THEMENAME_sanitize_text',
+    'transport' => 'postMessage',
+));
+$wp_customize->add_control( 'THEMENAME_contact_phone', array(
+    'label'		=> esc_html__( 'Phone', 'THEMENAME' ),
+    'section'	=> 'title_tagline',
+));
+
+// E-mail
+$wp_customize->add_setting( 'THEMENAME_contact_email', array(
+    'default' => esc_html__( 'DEAFULT EMAIL','THEMENAME' ),
+    'sanitize_callback' => 'THEMENAME_sanitize_text',
+    'transport' => 'postMessage',
+));
+$wp_customize->add_control( 'THEMENAME_contact_email', array(
+    'label'		=> esc_html__( 'E-mail', 'THEMENAME' ),
+    'section'	=> 'title_tagline',
+));
+
+
+
+/*
+* Live editing
+customizer.js - - - - - - - - - -
+*/
+// Phone
+wp.customize( 'THEMENAME_contact_phone', function( value ) {
+	value.bind( function( to ) {
+		if( to !== '' ){
+			$('.top-bar .bar-contact').removeClass('only-customizer');
+		} else {
+			$('.top-bar .bar-contact').addClass('only-customizer');
+		}
+		$('.top-bar .bar-contact a').html(to);
+		var tel_string = 'tel:'+to;
+		$('.top-bar .bar-contact a').attr('href', tel_string);
+	} );
+} );
+
+// Email
+wp.customize( 'THEMENAME_contact_email', function( value ) {
+	value.bind( function( to ) {
+		if( to !== '' ){
+			$('.footer-bar .bar-contact').removeClass('only-customizer');
+		} else {
+			$('.footer-bar .bar-contact').addClass('only-customizer');
+		}
+		$('.footer-bar .bar-contact a').html(to);
+		var email_string = 'mailto'+to;
+		$('.footer-bar .bar-contact a').attr('href', email_string);
+	} );
+} );
+
+/*
+* Display in header
+header.php - - - - - - - - - -
+*/
+<?php
+$THEMENAME_contact_phone = get_theme_mod( 'THEMENAME_contact_phone', esc_html__( 'DEFAULT PHONE','THEMENAME' ) );
+?>
+
+
+<?php
+if ( ! empty( $THEMENAME_contact_phone ) ) {  ?>
+<span class="bar-contact">
+	<a href="tel:<?php echo wp_kses_post( $THEMENAME_contact_phone ); ?>"><?php echo wp_kses_post( $THEMENAME_contact_phone ); ?></a>
+</span>
+<?php
+} else {
+	if ( is_customize_preview() ) {  ?>
+<span class="bar-contact only-customizer">
+	<a href=""></a>
+</span>
+<?php
+	}
+} ?>

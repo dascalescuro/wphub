@@ -1,0 +1,121 @@
+/*
+* Register new structure
+functions.php - - - - - - - - - -
+*/
+function THEMENAME_comment($comment, $args, $depth) {
+	if ( 'div' === $args['style'] ) {
+		$tag       = 'div';
+		$add_below = 'comment';
+	} else {
+		$tag       = 'li';
+		$add_below = 'div-comment';
+	}
+	?>
+	<<?php echo $tag ?> <?php comment_class( empty( $args['has_children'] ) ? '' : 'parent' ) ?> id="comment-<?php comment_ID() ?>">
+	<?php if ( 'div' != $args['style'] ) : ?>
+		<div id="div-comment-<?php comment_ID() ?>" class="comment-body">
+	<?php endif; ?>
+	<div class="comment-author vcard">
+		<?php if ( $args['avatar_size'] != 0 ) echo get_avatar( $comment, $args['avatar_size'] ); ?>
+		<?php printf( __( '<cite class="fn">%s</cite> <span class="says">says:</span>' ), get_comment_author_link() ); ?>
+	</div>
+	<?php if ( $comment->comment_approved == '0' ) : ?>
+		<em class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.' ); ?></em>
+		<br />
+	<?php endif; ?>
+
+	<div class="comment-meta commentmetadata"><a href="<?php echo htmlspecialchars( get_comment_link( $comment->comment_ID ) ); ?>">
+			<?php
+			/* translators: 1: date, 2: time */
+			printf( __('%1$s at %2$s'), get_comment_date(),  get_comment_time() ); ?></a><?php edit_comment_link( __( '(Edit)' ), '  ', '' );
+		?>
+	</div>
+
+	<?php comment_text(); ?>
+
+	<div class="reply">
+		<?php comment_reply_link( array_merge( $args, array( 'add_below' => $add_below, 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
+	</div>
+	<?php if ( 'div' != $args['style'] ) : ?>
+		</div>
+	<?php endif; ?>
+	<?php
+}
+
+
+/*
+* Comment field above user details
+functions.php - - - - - - - - - -
+*/
+function THEMENAME_comment_message( $fields ) {
+	$comment_field = $fields['comment'];
+	unset( $fields['comment'] );
+	$fields['comment'] = $comment_field;
+	return $fields;
+}
+add_filter( 'comment_form_fields', 'THEMENAME_comment_message' );
+
+
+/*
+* Custom comment form code
+template-tags.php - - - - - - - - - -
+*/
+if ( ! function_exists( 'THEMENAME_comments_template' ) ) :
+	/**
+	 * Custom list of comments for the theme.
+	 *
+	 * @since THEMENAME 1.0
+	 */
+	function THEMENAME_comments_template() {
+		$req = get_option( 'require_name_email' );
+		$aria_req = ( $req ? " aria-required='true'" : '' );
+		$args = array(
+			'title_reply' => __( 'Leave your reply', 'THEMENAME' ),
+			'comment_notes_before' => '',
+			'class_submit' => 'btn btn-primary pull-right',
+			'title_reply_before' => '<h3>',
+			'title_reply_after' => '</h3>',
+			'fields' => apply_filters( 'comment_form_default_fields', array(
+			  'author' =>
+			    '<p class="comment-form-author"><label for="author">' . __( 'Name', 'THEMENAME' ) . '</label> ' .
+			    ( $req ? '<span class="required">*</span>' : '' ) .
+			    '<input id="author" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) .
+			    '" size="30"' . $aria_req . ' /></p>',
+
+			  'email' =>
+			    '<p class="comment-form-email"><label for="email">' . __( 'Email', 'THEMENAME' ) . '</label> ' .
+			    ( $req ? '<span class="required">*</span>' : '' ) .
+			    '<input id="email" name="email" type="text" value="' . esc_attr(  $commenter['comment_author_email'] ) .
+			    '" size="30"' . $aria_req . ' /></p>',
+
+			  'url' =>
+			    '<p class="comment-form-url"><label for="url">' . __( 'Website', 'THEMENAME' ) . '</label>' .
+			    '<input id="url" name="url" type="text" value="' . esc_attr( $commenter['comment_author_url'] ) .
+			    '" size="30" /></p>',
+			) ),
+			'comment_field' => '<p class="comment-form-comment"><label for="comment">' . _x( 'Comment', 'THEMENAME' ) . '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>',
+		);
+		return $args;
+	}
+endif;
+
+
+/*
+* Display
+comments.php - - - - - - - - - -
+*/
+<ol class="comment-list">
+	<?php
+		wp_list_comments( array(
+			'style'      => 'ol',
+			'avatar_size' => 145,
+			'short_ping' => true,
+			'max_depth' => 3,
+			'callback' => 'THEMENAME_comment'
+		) );
+	?>
+</ol><!-- .comment-list -->
+
+<?php 
+comment_form( THEMENAME_comments_template() );
+?>

@@ -1,0 +1,71 @@
+/*
+* Enqueue scripts, styles and Google fonts
+functions.php - - - - - - - - - -
+*/
+
+function THEMENAME_scripts() {
+	wp_enqueue_style( 'THEMENAME-style', get_stylesheet_uri(), array( 'bootstrap' ) );
+
+	wp_enqueue_style( 'wp-mediaelement' );
+
+	wp_enqueue_style( 'bootstrap', get_template_directory_uri() . '/css/vendor/bootstrap.min.css', array(), '3.3.6', 'all' );
+
+	wp_enqueue_style( 'THEMENAME-fonts', THEMENAME_fonts_url(), array(), null );
+
+	wp_enqueue_style( 'font-awesome', get_template_directory_uri() . '/css/vendor/font-awesome.min.css', array(), '4.5.0' );
+
+	wp_enqueue_script( 'THEMENAME-functions-js', get_template_directory_uri() . '/js/functions.js', array(), '1.0.1', true );
+
+	wp_localize_script( 'THEMENAME-functions-js', 'screenReaderText', array(
+		'expand'   => '<span class="screen-reader-text">' . esc_html__( 'expand child menu', 'THEMENAME' ) . '</span>',
+		'collapse' => '<span class="screen-reader-text">' . esc_html__( 'collapse child menu', 'THEMENAME' ) . '</span>',
+	) );
+
+	wp_enqueue_script( 'bootstrap', get_template_directory_uri() . '/js/vendor/bootstrap.min.js', array( 'jquery' ), '20130115', true );
+
+	wp_enqueue_script( 'THEMENAME-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
+
+	if ( get_option( 'thread_comments' ) && is_singular() && comments_open() ) {
+		wp_enqueue_script( 'comment-reply' );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'THEMENAME_scripts' );
+
+
+function THEMENAME_fonts_url() {
+	$fonts_url = '';
+
+	/*
+     Translators: If there are characters in your language that are not
+     * supported by Merriweather, translate this to 'off'. Do not translate
+     * into your own language.
+	 */
+	$merriweather = _x( 'on', 'Merriweather font: on or off', 'THEMENAME' );
+
+	/*
+     Translators: If there are characters in your language that are not
+     * supported by Cabin, translate this to 'off'. Do not translate into your
+     * own language.
+	 */
+	$cabin = _x( 'on', 'Cabin font: on or off', 'THEMENAME' );
+
+	if ( 'off' != $merriweather || 'off' != $cabin ) {
+		$font_families = array();
+
+		if ( 'off' != $merriweather ) {
+			$font_families[] = 'Merriweather:400';
+		}
+
+		if ( 'off' != $cabin ) {
+			$font_families[] = 'Cabin:400,500,600,700';
+		}
+
+		$query_args = array(
+			'family' => urlencode( implode( '|', $font_families ) ),
+			'subset' => urlencode( 'latin,latin-ext' ),
+		);
+		$fonts_url = add_query_arg( $query_args, 'https://fonts.googleapis.com/css' );
+	}
+
+	return $fonts_url;
+}
